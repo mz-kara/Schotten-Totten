@@ -20,7 +20,7 @@ public class Carte{
         return couleur;
     } 
 
-    public void description(){
-        return "numero : " + numero;
+    public String description(){
+        return "numero : " + numero + couleur.description();
     }
 }

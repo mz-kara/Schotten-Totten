@@ -19,7 +19,7 @@ public class Joueur{
     }
 
     public int ajouter(Carte carte){
-        int size = cartes.size()
+        int size = cartes.size();
         if (size < tailleMax){
             cartes.add(carte);
             return 1;
@@ -29,7 +29,7 @@ public class Joueur{
     }
 
     public Carte getCarte(int i){
-        return cartes.get(i)
+        return cartes.get(i);
     }
 
     public int getId(){
@@ -37,11 +37,10 @@ public class Joueur{
     }
 
     public String description() {
-    String phrase = "Mes cartes sont : ";
-    for (Carte carte : c) {
-        phrase = phrase + carte + " |";
+        String phrase = "Joueur " + id + ", Carte : ";
+        for (Carte carte : c) {
+            phrase = phrase + carte + " |";
+        }
+        return phrase;
     }
-
-    return phrase;
-}
 }

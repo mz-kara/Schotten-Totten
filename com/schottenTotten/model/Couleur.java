@@ -1,3 +1,4 @@
+
 public class Couleur{
     private int r;
     private int g;
@@ -9,10 +10,11 @@ public class Couleur{
         this.b = couleurValide(b);
     }
 
-    public Couleur(){
+     public Couleur(){
         this(0,0,0);
     }
 
+ 
     private int couleurValide(int couleur){
         if (couleur < 0) {
             return 0;
@@ -38,7 +40,28 @@ public class Couleur{
     public static Couleur violet(){
         return new Couleur(127,0,255);
     }
+
     public static Couleur marron(){
         return new Couleur(210,180,140);
+    }
+
+    public getR(){
+        return r;
+    }
+    public getG(){
+        return g;
+    }
+    public getB(){
+        return b;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        Couleur couleur = (Couleur) o;
+        return r == couleur.getR && g == couleur.getG && b == couleur.getB;
+    }
+
+    public String description(){
+        return "couleur :  (" + r + "," + g + "," + b + ")";
     }
 }

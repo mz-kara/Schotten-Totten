@@ -30,7 +30,7 @@ public class Jeu{
 
     private void InitialisationCartes(List<Carte> cartes){
         for(int i=1; i<6; i++){
-            Couleur couleur = Couleur.id(i);
+            Couleur couleur = Couleur.fromId(i);
             for(int j=1; j<9; j++){
                 Carte carte = new Carte(j, couleur);
                 cartes.add(carte);
@@ -42,6 +42,18 @@ public class Jeu{
         for(int i=1; i<9; i++){
             bornes.add(new Borne());
         }
+    }
+
+    public List<Bornes> getBornes(){
+        return bornes;
+    }
+    
+    public Joueur getJoueur1(){
+        return joueur1;
+    }
+
+    public Joueur getJoueur2(){
+        return joueur2;
     }
 
     public void piocher(Joueur joueur){

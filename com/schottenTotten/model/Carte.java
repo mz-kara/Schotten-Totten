@@ -11,6 +11,7 @@ public class Carte{
         this.numero = numero;
         this.couleur = couleur;
     }
+    
 
     public int getNumero(){
         return numero;
@@ -19,6 +20,14 @@ public class Carte{
     public int getCouleur(){
         return couleur;
     } 
+
+    @Override
+    public boolean equals(Object o) {   
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Carte carte = (Carte) o;
+        return numero = carte.getNumero() && couleur.equals(carte.getCouleur());
+    }
 
     public String description(){
         return "numero : " + numero + couleur.description();

@@ -4,10 +4,17 @@ import java.util.ArrayList;
 public class Joueur{
     private int tailleMax;
     private int tailleMin;
+    private int id;
     private List<Carte> cartes;
 
     public Joueur(){
+        this(0,6,0);
+        private Carte[] cartes = new Carte[6];
+    }
+
+    public Joueur(int id){
         this(0,6);
+        this.id = id;
         private Carte[] cartes = new Carte[6];
     }
 
@@ -23,6 +30,10 @@ public class Joueur{
 
     public Carte getCarte(int i){
         return cartes.get(i)
+    }
+
+    public int getId(){
+        return this.id;
     }
 
     public String description() {

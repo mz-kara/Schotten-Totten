@@ -44,6 +44,10 @@ public class Borne{
         }
     }
 
+    public int getEtat(){
+        return etat;
+    }
+
     public boolean estPleine(Joueur joueur){
         return getCartes(joueur).size() == tailleMax;
     }

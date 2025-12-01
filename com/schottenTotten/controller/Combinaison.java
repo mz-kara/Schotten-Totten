@@ -6,9 +6,9 @@ public class Combinaison{
 
     public static boolean brelan(Carte carte1, Carte carte2, Carte carte3){
         if(carte1.getNumero() == carte2.getNumero() && carte2.getNumero() == carte3.getNumero()){
-            return true
+            return true;
         }else{
-            return false
+            return false;
         }
     }
 

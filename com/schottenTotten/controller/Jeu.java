@@ -57,4 +57,31 @@ public class Jeu{
 
     }
 
+    public int victoire(){
+        int etat1 = 0;
+        int combo1 = 0;
+        int etat2 = 0;
+        int combo2 = 0;
+        for(int i=1; i<9; i++){
+            Borne borne = bornes.get(i);
+            if(borne.getEtat() == 1){
+                etat1++;
+                combo1++;
+                combo2 = 0;
+            }else(borne.getId() == 2){
+                etat2++;
+                combo2++;
+                combo1 = 0;
+            }
+            if(combo1 = 3){
+                return 1;
+            }else if(combo2 = 3){
+                return 2;
+            }
+        }
+        if (etat1 == 4) return 1;
+        else if (etat2 == 4) return 2;
+        else return 0;
+    }
+
 }

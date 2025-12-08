@@ -3,6 +3,7 @@ public class Couleur{
     private int r;
     private int g;
     private int b;
+    private string codeCarre;
 
     public Couleur(int r, int g, int b){
         this.r = couleurValide(r);
@@ -26,22 +27,28 @@ public class Couleur{
     }
 
     public static Couleur bleu(){
+        this.codeCarre = "\u001b[34m"
         return new Couleur(0,0,255);
     }
     public static Couleur vert(){
+        this.codeCarre = "\u001b[32m"
         return new Couleur(0,255,0);
     }
     public static Couleur rouge(){
+        this.codeCarre = "\u001b[31m"
         return new Couleur(255,0,0);
     }
     public static Couleur jaune(){
+        this.codeCarre = "\u001b[33m"
         return new Couleur(255,255,0);
     }
     public static Couleur violet(){
+        this.codeCarre = "\u001b[35m"
         return new Couleur(127,0,255);
     }
 
     public static Couleur marron(){
+        this.codeCarre = "\u001b[38;2;210;180;140m"
         return new Couleur(210,180,140);
     }
 
@@ -55,6 +62,15 @@ public class Couleur{
         return b;
     }
 
+    public static Couleur fromId(int id){
+        if(id == 1) return Couleur.vert();
+        else if(id == 2) return Couleur.bleu();
+        else if(id == 3) return Couleur.rouge();
+        else if(id == 4) return Couleur.jaune();
+        else if(id == 5) return Couleur.violet();
+        else if(id == 6) return Couleur.marron();
+    }
+
     @Override
     public boolean equals(Object o){
         Couleur couleur = (Couleur) o;
@@ -62,6 +78,6 @@ public class Couleur{
     }
 
     public String description(){
-        return "couleur :  (" + r + "," + g + "," + b + ")";
+        return codeVert + " ■ " + "\u001b[0m"; 
     }
 }

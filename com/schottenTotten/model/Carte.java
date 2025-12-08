@@ -1,3 +1,5 @@
+package com.schottenTotten.model;
+
 public class Carte{
     private int numero;
     private Couleur couleur
@@ -30,6 +32,6 @@ public class Carte{
     }
 
     public String description(){
-        return "numero : " + numero + couleur.description();
+        return numero + couleur.description() + " | " + numero;
     }
 }

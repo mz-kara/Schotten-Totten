@@ -1,7 +1,7 @@
+package com.schottenTotten.model;
+
 import java.util.ArrayList;
 import java.util.List;
-import com.schottenTotten.model.Joueur;
-
 
 public class Borne{
     private int etat;

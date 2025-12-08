@@ -1,3 +1,4 @@
+package com.schottenTotten.model;
 
 public class Couleur{
     private int r;
@@ -78,6 +79,6 @@ public class Couleur{
     }
 
     public String description(){
-        return codeVert + " ■ " + "\u001b[0m"; 
+        return codeCarre + " ■ " + "\u001b[0m";
     }
 }

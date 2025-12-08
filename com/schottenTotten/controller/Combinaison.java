@@ -1,7 +1,7 @@
 public class Combinaison{
 
     public static boolean couleur(Carte carte1, Carte carte2, Carte carte3){
-        return carte1.getCouleur().equals(carte2.getCouleur()) && carte2.getCouleur().equals(carte3.getCouleur())
+        return carte1.getCouleur().equals(carte2.getCouleur()) && carte2.getCouleur().equals(carte3.getCouleur());
     }
 
     public static boolean brelan(Carte carte1, Carte carte2, Carte carte3){
@@ -29,6 +29,6 @@ public class Combinaison{
     }
 
     public static int somme(Carte carte1, Carte carte2, Carte carte3){
-        return carte1.getNumero() + carte2.getNumero() + carte3.getNumero()
+        return carte1.getNumero() + carte2.getNumero() + carte3.getNumero();
     }
 }

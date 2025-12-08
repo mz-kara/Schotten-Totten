@@ -1,3 +1,5 @@
+package com.schottenTotten.model;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -9,27 +11,30 @@ public class Joueur{
 
     public Joueur(){
         this(0,6,0);
-        private Carte[] cartes = new Carte[6];
+        this.cartes = new ArrayList<>();
     }
 
     public Joueur(int id){
         this(0,6);
         this.id = id;
-        private Carte[] cartes = new Carte[6];
+        this.cartes = new ArrayList<>();
     }
 
-    public int ajouter(Carte carte){
+    public void ajouter(Carte carte){
         int size = cartes.size();
         if (size < tailleMax){
             cartes.add(carte);
-            return 1;
-        }else{
-            return 0;
         }
     }
 
-    public Carte getCarte(int i){
-        return cartes.get(i);
+    public void retirerCarte(int index) {
+        if (index >= 0 && index < cartes.size()) {
+            cartes.remove(index);
+        }
+    }
+
+    public Carte getCarte(int indexCarte){
+        return cartes.get(indexCarte);
     }
 
     public int getId(){

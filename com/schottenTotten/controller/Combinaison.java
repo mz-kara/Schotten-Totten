@@ -1,34 +1,65 @@
+package com.schottenTotten.controller;
+
+import com.schottenTotten.model.Carte;
+import com.schottenTotten.model.Couleur;
+
+import java.util.List;
+import java.util.Collections;
+import java.util.ArrayList;
+
 public class Combinaison{
 
-    public static boolean couleur(Carte carte1, Carte carte2, Carte carte3){
-        return carte1.getCouleur().equals(carte2.getCouleur()) && carte2.getCouleur().equals(carte3.getCouleur());
-    }
-
-    public static boolean brelan(Carte carte1, Carte carte2, Carte carte3){
-        if(carte1.getNumero() == carte2.getNumero() && carte2.getNumero() == carte3.getNumero()){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    public static boolean suite(Carte carte1, Carte carte2, Carte carte3){
-        if(carte1.getNumero() <= 4)
-            if(carte1.getNumero() == carte1.getNumero() + 1 && carte2.getNumero() == carte2.getNumero() + 1){
-                return true;
-            }else{
+    public static boolean couleur(List<Carte> cartes) {
+        if (cartes.size() < 3) return false; 
+    
+        Couleur reference = cartes.get(0).getCouleur();
+    
+        for (Carte c : cartes) {
+            if (!c.getCouleur().equals(reference)) {
                 return false;
             }
-        else{
-            return false;
         }
+        return true; 
     }
 
-    public static boolean suite_couleur(Carte carte1, Carte carte2, Carte carte3){
-        return suite(carte1, carte2, carte3) && couleur(carte1, carte2, carte3);
+    public static boolean brelan(List<Carte> cartes) {
+        if (cartes.size() < 3) return false; 
+        int valeurReference = cartes.get(0).getNumero();
+    
+        for (Carte c : cartes) {
+            if (c.getNumero() != valeurReference) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    public static int somme(Carte carte1, Carte carte2, Carte carte3){
-        return carte1.getNumero() + carte2.getNumero() + carte3.getNumero();
+    public static boolean suite(List<Carte> cartes) {
+        if (cartes.size() < 3) return false;
+        List<Carte> copieCartes = new ArrayList<>(cartes);
+        Collections.sort(copieCartes, (c1, c2) -> c1.getNumero() - c2.getNumero());
+    
+        for (int i = 0; i < copieCartes.size() - 1; i++) {
+            int valeurActuelle = copieCartes.get(i).getNumero();
+            int valeurSuivante = copieCartes.get(i + 1).getNumero();
+    
+            if (valeurSuivante != valeurActuelle + 1) {
+                return false;
+            }
+        }
+        return true;
     }
+
+    public static boolean suiteCouleur(List<Carte> cartes){
+        return suite(cartes) && couleur(cartes);
+    }
+
+    public static int somme(List<Carte> cartes){
+        int somme = 0;
+        for (Carte c : cartes){
+            somme += c.getNumero();
+        }
+        return somme;
+    }
+
 }

@@ -1,4 +1,4 @@
-import com.schottenTotten.model;
+package com.schottenTotten.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,14 +13,14 @@ public class Pioche{
         melanger();
     }
 
-    private void intialisation(){
+    private void initialisation(){
         for (int i = 1; i <= 9; i++){
-            pioche.add(new Carte(i,Couleur bleu()));
-            pioche.add(new Carte(i,Couleur jaune()));
-            pioche.add(new Carte(i,Couleur rouge()));
-            pioche.add(new Carte(i,Couleur jaune()));
-            pioche.add(new Carte(i,Couleur violet()));
-            pioche.add(new Carte(i,Couleur marron()));
+            pioche.add(new Carte(i,Couleur.bleu()));
+            pioche.add(new Carte(i,Couleur.jaune()));
+            pioche.add(new Carte(i,Couleur.rouge()));
+            pioche.add(new Carte(i,Couleur.vert()));
+            pioche.add(new Carte(i,Couleur.violet()));
+            pioche.add(new Carte(i,Couleur.marron()));
         }
     }
 
@@ -38,7 +38,10 @@ public class Pioche{
     }
 
     public int taille(){
-        return cartes.size();
+        return pioche.size();
     }
 
+    public boolean estVide() {
+        return pioche.isEmpty();
+    }
 }

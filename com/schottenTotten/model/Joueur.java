@@ -5,19 +5,17 @@ import java.util.ArrayList;
 
 public class Joueur{
     private int tailleMax;
-    private int tailleMin;
     private int id;
     private List<Carte> cartes;
 
-    public Joueur(){
-        this(0,6,0);
+    public Joueur(int id){
+        this.id = id;
+        this.tailleMax = 6;
         this.cartes = new ArrayList<>();
     }
 
-    public Joueur(int id){
-        this(0,6);
-        this.id = id;
-        this.cartes = new ArrayList<>();
+    public Joueur(){
+        this(1);
     }
 
     public void ajouter(Carte carte){
@@ -34,7 +32,10 @@ public class Joueur{
     }
 
     public Carte getCarte(int indexCarte){
-        return cartes.get(indexCarte);
+        if (indexCarte >= 0 && indexCarte <= 3){
+            return cartes.get(indexCarte);
+        }
+        return null;
     }
 
     public int getId(){
@@ -43,8 +44,9 @@ public class Joueur{
 
     public String description() {
         String phrase = "Joueur " + id + ", Carte : ";
-        for (Carte carte : c) {
-            phrase = phrase + carte + " |";
+        for (int i = 0; i < cartes.size(); i++) {
+            Carte c = cartes.get(i);
+            phrase += "[" + i + "] " + c.description() + " | ";
         }
         return phrase;
     }

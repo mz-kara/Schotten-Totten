@@ -1,4 +1,6 @@
-package com.schottenTotten.model;
+package com.schottenTotten.controller;
+
+import com.schottenTotten.model.Carte;
 
 import java.util.ArrayList;
 import java.util.List;

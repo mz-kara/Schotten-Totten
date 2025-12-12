@@ -1,5 +1,9 @@
 package com.schottenTotten.controller;
 
+import com.schottenTotten.model.Joueur;
+import com.schottenTotten.model.Borne;
+import com.schottenTotten.model.Carte;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -9,28 +13,23 @@ public class Jeu{
     private Joueur joueur2;
     private Joueur joueurCourant;
     private Pioche pioche;
-    //private List<Carte> cartes;
     private List<Borne> bornes;
 
     public Jeu(){
         this.numero = 0;
         this.joueur1 = new Joueur();
         this.joueur2 = new Joueur();
-        //private Carte[] cartes = new Carte[54];
         this.bornes = new ArrayList<>();
         this.pioche = new Pioche();
-        //InitialisationCartes(cartes);
         InitialisationBornes(bornes);
     }
 
     public Jeu(Joueur joueur1, Joueur joueur2){
         this.joueur1 = joueur1;
         this.joueur2 = joueur2;
+        this.joueurCourant = joueur1;
         this.pioche = new Pioche();
-        private Joueur[] cartes = new Joueur[2];
-        //private Carte[] cartes = new Carte[54];
         this.bornes = new ArrayList<>();
-        //InitialisationCartes(cartes);
         InitialisationBornes();
         distribuerCartes();
     }
@@ -87,7 +86,7 @@ public class Jeu{
     }
 
     public void piocher(Joueur joueur){
-        Carte carte = Pioche.piocher(cartes);
+        Carte carte = Pioche.piocher(pioche);
         joueur.ajouter(carte);
     }
 

@@ -1,3 +1,8 @@
+package com.schottenTotten.view;
+
+import com.schottenTotten.model.Borne;
+import com.schottenTotten.model.Joueur;
+
 public class Affichage{
 
 
@@ -9,7 +14,7 @@ public class Affichage{
             for(n=1; n<3; n++)
                 if(n == 1){
                     System.out.print("Joueur 1 : ")
-                    joueur = Jeu.getJoueur1();
+                    Joueur joueur = Jeu.getJoueur1();
                 }else if(n == 2){
                     System.out.print("Joueur 2 : ")
                     Joueur joueur = Jeu.getJoueur2();

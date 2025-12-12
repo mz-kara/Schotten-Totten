@@ -19,23 +19,25 @@ public class main {
         int choix_carte = 0;
         int choix_borne = 0;
 
-        while(1){
-            Affichage(Jeu);
-            Affichage(Jeu, joueur1);
+        while(true){
+            Affichage(jeu);
+            Affichage(jeu, joueur1);
             System.out.println("Tour du Joueur 1 : Choisissez une carte puis une borne.");
             choix_carte = scanner.nextInt();
             choix_borne = scanner.nextInt();
-            jeu.poser(jeu.getBornes.get(choix_borne), joueur1, joueur1.getCarte(choix_carte));
+            jeu.poser(jeu.getBornes.get(choix_borne), joueur1.getCarte(choix_carte));
             jeu.piocher(joueur1);
+            jeu.changerJoueur();
 
 
-            Affichage(Jeu);
-            Affichage(Jeu, joueur2);
+            Affichage(jeu);
+            Affichage(jeu, joueur2);
             System.out.println("Tour du Joueur 2 : Choisissez une carte puis une borne.");
             choix_carte = scanner.nextInt();
             choix_borne = scanner.nextInt();
-            jeu.poser(jeu.getBornes.get(choix_borne), joueur2, joueur2.getCarte(choix_carte));
+            jeu.poser(jeu.getBornes.get(choix_borne), joueur2.getCarte(choix_carte));
             jeu.piocher(joueur2);
+            jeu.changerJoueur();
         }
 
         scanner.close();

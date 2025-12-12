@@ -2,11 +2,11 @@ package com.schottenTotten.model;
 
 public class Carte{
     private int numero;
-    private Couleur couleur
+    private Couleur couleur;
 
     public Carte(){
         this.numero = 0;
-        this.couleur = Couleur();
+        this.couleur = new Couleur();
     }
 
     public Carte(int numero, Couleur couleur){

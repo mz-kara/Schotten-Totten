@@ -1,8 +1,9 @@
 package com.schottenTotten.controller;
 
-import com.schottenTotten.model.Joueur;
 import com.schottenTotten.model.Borne;
 import com.schottenTotten.model.Carte;
+import com.schottenTotten.model.Joueur;
+import com.schottenTotten.model.Pioche;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -13,16 +14,8 @@ public class Jeu{
     private Joueur joueur2;
     private Joueur joueurCourant;
     private Pioche pioche;
+    private boolean partieTerminee;
     private List<Borne> bornes;
-
-    public Jeu(){
-        this.numero = 0;
-        this.joueur1 = new Joueur();
-        this.joueur2 = new Joueur();
-        this.bornes = new ArrayList<>();
-        this.pioche = new Pioche();
-        InitialisationBornes(bornes);
-    }
 
     public Jeu(Joueur joueur1, Joueur joueur2){
         this.joueur1 = joueur1;
@@ -30,7 +23,8 @@ public class Jeu{
         this.joueurCourant = joueur1;
         this.pioche = new Pioche();
         this.bornes = new ArrayList<>();
-        InitialisationBornes();
+        this.partieTerminee = false;
+        initialisationBornes();
         distribuerCartes();
     }
 
@@ -44,7 +38,7 @@ public class Jeu{
     //    }
     //}
 
-    private void InitialisationBornes(){
+    private void initialisationBornes(){
         for(int i=1; i<=9; i++){
             bornes.add(new Borne());
         }
@@ -52,8 +46,8 @@ public class Jeu{
 
     private void distribuerCartes() {
         for (int i = 0; i < 6; i++) {
-            joueur1.ajouterCarte(pioche.piocher());
-            joueur2.ajouterCarte(pioche.piocher());
+            joueur1.ajouter(pioche.piocher());
+            joueur2.ajouter(pioche.piocher());
         }
     }
 
@@ -65,7 +59,7 @@ public class Jeu{
         }
     }
 
-    public List<Bornes> getBornes(){
+    public List<Borne> getBornes(){
         return bornes;
     }
     
@@ -86,12 +80,24 @@ public class Jeu{
     }
 
     public void piocher(Joueur joueur){
-        Carte carte = Pioche.piocher(pioche);
+        Carte carte = pioche.piocher();
         joueur.ajouter(carte);
     }
 
-    public void revendiquer(Borne borne, Joueur joueur){
-
+    public void revendiquer(int idxborne){
+        if (idxborne < 0 || idxborne >= bornes.size()) {
+        System.out.println("Numéro de borne invalide.");
+        return;
+        }
+        Borne borne = bornes.get(idxborne);
+        int resultat = borne.calculGagnant();
+        if (resultat == 0){
+            System.out.println("Impossible de revendiquer cette borne pour l'instant.");
+        }
+        else {
+            System.out.println("Le joueur " + resultat + "possède maintenant cette borne");
+            borne.setEtat(resultat);
+        }
     }
 
     public boolean poser(int indexCarte, int indexBorne) {
@@ -130,12 +136,20 @@ public class Jeu{
                 combo1 = 0;
             }
             if(combo1 == 3){
+                partieTerminee = true;
                 return joueur1;
             }else if(combo2 == 3){
+                partieTerminee = true;
                 return joueur2;
             }
-            if (etat1 == 5) return joueur1;
-            else if (etat2 == 5) return joueur2;
+            if (etat1 == 5) {
+                partieTerminee = true;
+                return joueur1;
+            }
+            else if (etat2 == 5) {
+                partieTerminee = true;
+                return joueur2;
+            }
             continue;
         }
         return null;

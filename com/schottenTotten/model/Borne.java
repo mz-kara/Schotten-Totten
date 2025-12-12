@@ -44,6 +44,47 @@ public class Borne{
         }
     }
 
+    public int calculerScore(List<Carte> cartes){
+        int score = Combinaison.somme(cartes);
+        if (Combinaison.suiteCouleur(cartes)) return 500 + score;
+        if (Combinaison.brelan(cartes)) return 400 + score;
+        if (Combinaison.couleur(cartes)) return 300 + score;
+        if (Combinaison.suite(cartes)) return 200 + score;
+        return score;
+    }
+
+    // Version simple (3 cartes partout)
+    public int calculGagnant() {
+        if (etat != 0) return etat;
+
+        if (cartesJ1.size() == 3 && cartesJ2.size() == 3) {
+            int scoreJ1 = calculerScore(cartesJ1);
+            int scoreJ2 = calculerScore(cartesJ2);
+
+            if (scoreJ1 > scoreJ2) {
+                etat = 1;
+                return 1;
+            }
+            if (scoreJ2 > scoreJ1){
+                etat = 2;
+                return 2;
+            } 
+            
+            // En cas d'égalité stricte, le premier qui a posé sa 3ème carte gagne
+            // (Il faudra gérer ça, mais pour l'instant disons J1 par défaut)
+            return 0; 
+        }
+
+        // Cas 3 (Version Expert) : Revendiquer une borne non finie        
+        return 0; // Personne n'a encore gagné
+    }
+    
+    // Setter pour acter la victoire
+    public void setEtat(int idJoueur) {
+        etat = idJoueur;
+    }
+
+
     public int getEtat(){
         return etat;
     }

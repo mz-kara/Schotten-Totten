@@ -19,7 +19,7 @@ public class Carte{
         return numero;
     }
 
-    public int getCouleur(){
+    public Couleur getCouleur(){
         return couleur;
     } 
 
@@ -28,10 +28,10 @@ public class Carte{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Carte carte = (Carte) o;
-        return numero = carte.getNumero() && couleur.equals(carte.getCouleur());
+        return numero == carte.getNumero() && couleur.equals(carte.getCouleur());
     }
 
     public String description(){
-        return numero + couleur.description() + " | " + numero;
+        return numero + couleur.description();
     }
 }

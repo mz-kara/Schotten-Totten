@@ -1,5 +1,7 @@
 package com.schottenTotten.model;
 
+import com.schottenTotten.controller.Combinaison;
+
 import java.util.ArrayList;
 import java.util.List;
 

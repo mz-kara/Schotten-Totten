@@ -18,9 +18,10 @@ public class Jeu{
     private boolean partieTerminee;
     private List<Borne> bornes;
 
-    public Jeu(Joueur joueur1, Joueur joueur2){
-        this.joueur1 = joueur1;
-        this.joueur2 = joueur2;
+    public Jeu(int mode){   // mode : 1 -> solo avec ia, 2 -> humain vs humain
+        this.joueur1 = new Joueur(1);
+        if(mode == 2) this.joueur2 = new Joueur(2);
+        else if(mode == 1) this.joueur2 = new Joueur(2); //à compléter par ai
         this.joueurCourant = joueur1;
         this.joueurAdverse = joueur2;
         this.pioche = new Pioche();

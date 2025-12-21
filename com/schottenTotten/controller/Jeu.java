@@ -13,6 +13,7 @@ public class Jeu{
     private Joueur joueur1;
     private Joueur joueur2;
     private Joueur joueurCourant;
+    private Joueur joueurAdverse;
     private Pioche pioche;
     private boolean partieTerminee;
     private List<Borne> bornes;
@@ -21,6 +22,7 @@ public class Jeu{
         this.joueur1 = joueur1;
         this.joueur2 = joueur2;
         this.joueurCourant = joueur1;
+        this.joueurAdverse = joueur2;
         this.pioche = new Pioche();
         this.bornes = new ArrayList<>();
         this.partieTerminee = false;
@@ -54,8 +56,10 @@ public class Jeu{
     public void changerJoueur() {
         if (joueurCourant == joueur1) {
             joueurCourant = joueur2;
+            joueurAdverse = joueur1;
         } else {
             joueurCourant = joueur1;
+            joueurAdverse = joueur2;
         }
     }
 
@@ -75,6 +79,14 @@ public class Jeu{
         return joueurCourant;
     }
 
+    public Joueur getJoueurAdverse(){
+        if(joueurCourant.getId() == 1){
+            return joueur2;
+        }else{
+            return joueur1;
+        }
+    }
+
     public boolean isPartieTerminee() {
         return partieTerminee;
     }
@@ -86,27 +98,41 @@ public class Jeu{
 
     public void revendiquer(int idxborne){
         if (idxborne < 0 || idxborne >= bornes.size()) {
-        System.out.println("Numéro de borne invalide.");
-        return;
+            System.out.println("Numéro de borne invalide.");
+            return;
         }
         Borne borne = bornes.get(idxborne);
-        int resultat = borne.calculGagnant();
-        if (resultat == 0){
-            System.out.println("Impossible de revendiquer cette borne pour l'instant.");
-        }
-        else {
-            System.out.println("Le joueur " + resultat + "possède maintenant cette borne");
-            borne.setEtat(resultat);
+        if(borne.estPleine(joueurCourant) && borne.estPleine(joueurCourant)){
+            int resultat = borne.calculGagnant();
+            if (resultat == 0){
+                System.out.println("Impossible de revendiquer cette borne pour l'instant.");
+            }
+            else {
+                System.out.println("Le joueur " + resultat + "possède maintenant cette borne");
+                borne.setEtat(resultat);
+            }
         }
     }
 
     public boolean poser(int indexCarte, int indexBorne) {
         if (partieTerminee) return false;
         
-        if (indexBorne < 0 || indexBorne >= 9) return false;
+        if (indexBorne < 0 || indexBorne >= 9){
+            System.out.println("Choisissez un index d'une borne compris entre [0, 8].");
+            return false;
+        } 
+
+        if (indexCarte < 0 || indexCarte >= 6){
+            System.out.println("Choisissez un index d'une carte compris entre [0, 5].");
+            return false;
+        } 
+        
         
         Borne borne = bornes.get(indexBorne);
-        if (borne.estPleine(joueurCourant)) return false;
+        if (borne.estPleine(joueurCourant)){
+            System.out.println("La borne est pleine, veuillez choisir une autre borne!");
+            return false;
+        }
 
         Carte carte = joueurCourant.getCarte(indexCarte);
         borne.ajouter(carte, joueurCourant);

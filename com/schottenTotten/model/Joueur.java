@@ -32,7 +32,7 @@ public class Joueur{
     }
 
     public Carte getCarte(int indexCarte){
-        if (indexCarte >= 0 && indexCarte <= 3){
+        if (indexCarte >= 0 && indexCarte <= 5){
             return cartes.get(indexCarte);
         }
         return null;

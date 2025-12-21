@@ -13,6 +13,7 @@ import java.util.Scanner;
 
 public class main {
     public static void main(String[] args) {
+        Joueur gagnant = null;
         Joueur joueur1 = new Joueur(1);
         Joueur  joueur2 = new Joueur(2);
         Jeu jeu = new Jeu(joueur1, joueur2);
@@ -28,7 +29,14 @@ public class main {
             System.out.println("Tour du Joueur 1 : Choisissez une carte puis une borne.");
             choix_carte = scanner.nextInt();
             choix_borne = scanner.nextInt();
-            jeu.poser(choix_carte, choix_carte);
+
+            while(jeu.poser(choix_carte, choix_borne) == false){
+                System.out.println("Tour du Joueur 1 : Choisissez une carte puis une borne.");
+                choix_carte = scanner.nextInt();
+                choix_borne = scanner.nextInt();
+            }
+
+            jeu.revendiquer(choix_borne);
             jeu.piocher(joueur1);
             jeu.changerJoueur();
 
@@ -38,13 +46,21 @@ public class main {
             System.out.println("Tour du Joueur 2 : Choisissez une carte puis une borne.");
             choix_carte = scanner.nextInt();
             choix_borne = scanner.nextInt();
-            jeu.poser(choix_carte, choix_carte);
+
+            while(jeu.poser(choix_carte, choix_borne) == false){
+                System.out.println("Tour du Joueur 2 : Choisissez une carte puis une borne.");
+                choix_carte = scanner.nextInt();
+                choix_borne = scanner.nextInt();
+            }
+
+            jeu.revendiquer(choix_borne);
             jeu.piocher(joueur2);
             jeu.changerJoueur();
 
+            gagnant = jeu.victoire();
             PartieFinie = jeu.isPartieTerminee();
         }
-        
+
         scanner.close();
     }
 }

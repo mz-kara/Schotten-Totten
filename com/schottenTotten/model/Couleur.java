@@ -4,7 +4,7 @@ public class Couleur{
     private int r;
     private int g;
     private int b;
-    private String codeCarre;
+    private String codeCarre;   
 
     public Couleur(int r, int g, int b, String code){
         this.r = couleurValide(r);
@@ -56,16 +56,6 @@ public class Couleur{
     }
     public int getB(){
         return b;
-    }
-
-    public static Couleur fromId(int id){
-        if(id == 1) return Couleur.vert();
-        else if(id == 2) return Couleur.bleu();
-        else if(id == 3) return Couleur.rouge();
-        else if(id == 4) return Couleur.jaune();
-        else if(id == 5) return Couleur.violet();
-        else if(id == 6) return Couleur.marron();
-        return null;
     }
 
     @Override

@@ -7,7 +7,6 @@ import com.schottenTotten.model.Joueur;
 
 import java.util.List;
 public class Affichage{
-
     public static void AfficheJeu(Jeu jeu){
         String gagneeJ1 = "GAGNEE PAR J1";
         String gagneeJ2 = "GAGNEE PAR J2";

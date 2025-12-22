@@ -19,6 +19,7 @@ public class main {
         Scanner scanner = new Scanner(System.in);
         int choix_carte = 0;
         int choix_borne = 0;
+        int choix_borne_revendique = 0;
 
         boolean PartieFinie = false;
         while(!PartieFinie){
@@ -34,7 +35,14 @@ public class main {
                 choix_borne = scanner.nextInt();
             }
 
-            jeu.revendiquer(choix_borne);
+            System.out.println("Tour du Joueur 1 : Revendiquer une borne ? Entrez son numéro, sinon saisissez -1.");
+            choix_borne_revendique = scanner.nextInt();
+            if(choix_borne_revendique == -1){
+                jeu.revendiquer(choix_borne, choix_borne_revendique);
+            }else{
+                jeu.revendiquer(choix_borne_revendique, choix_borne_revendique);
+            }
+
             jeu.piocher(jeu.getJoueurCourant());
             jeu.changerJoueur();
 
@@ -51,7 +59,14 @@ public class main {
                 choix_borne = scanner.nextInt();
             }
 
-            jeu.revendiquer(choix_borne);
+            System.out.println("Tour du Joueur 2 : Revendiquer une borne ? Entrez son numéro, sinon saisissez -1.");
+            choix_borne_revendique = scanner.nextInt();
+            if(choix_borne_revendique == -1){
+                jeu.revendiquer(choix_borne, choix_borne_revendique);
+            }else{
+                jeu.revendiquer(choix_borne_revendique, choix_borne_revendique);
+            }
+
             jeu.piocher(jeu.getJoueurCourant());
             jeu.changerJoueur();
 

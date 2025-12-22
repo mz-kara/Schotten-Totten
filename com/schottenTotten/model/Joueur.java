@@ -38,6 +38,10 @@ public class Joueur{
         return null;
     }
 
+    public List<Carte> getCartes(){
+        return cartes;
+    }
+
     public int getId(){
         return this.id;
     }

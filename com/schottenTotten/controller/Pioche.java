@@ -41,6 +41,10 @@ public class Pioche{
         }
     }
 
+    public List<Carte> getCartes(){
+        return pioche;
+    }
+    
     public int taille(){
         return pioche.size();
     }

@@ -97,7 +97,7 @@ public class Jeu{
         joueur.ajouter(carte);
     }
 
-    public void revendiquer(int idxborne){
+    public void revendiquer(int idxborne, int reponse){
         if (idxborne < 0 || idxborne >= bornes.size()) {
             System.out.println("Numéro de borne invalide.");
             return;
@@ -113,7 +113,44 @@ public class Jeu{
             }else{
                 System.out.println("Le joueur " + resultat + " possède maintenant cette borne");
             }
+        }else{
+            if(reponse != -1){
+                if (peutRevendiquer(borne)){
+                    borne.setEtat(joueurCourant.getId());
+                    System.out.println("Revendication acceptée !");
+                }else{
+                    System.out.println("Revendication refusée !");   
+                }
+            }
         }
+    }
+
+    private boolean peutRevendiquer(Borne borne) {
+        // Les cartes des joueurs dans la borne
+        List<Carte> cartesJCourant =  borne.getCartes(joueurCourant);
+        List<Carte> cartesJAdverse =  borne.getCartes(joueurAdverse);
+
+        // Il faut que celui qui revendique ait 3 cartes dans la borne
+        if (cartesJCourant.size() < 3) return false;
+
+        // Liste des cartes disponibles non-jouées par le joueur adverse
+        List<Carte> cartes_possibles = new ArrayList<>(pioche.getCartes());
+        cartes_possibles.addAll(joueurAdverse.getCartes());
+
+        // On teste si une combinaison plus forte existe
+        List<Carte> cartesJAdversePossible = new ArrayList<>(cartesJAdverse);
+        int scoreJCourant = borne.calculerScore(cartesJCourant);
+        int nb_iter = 0;
+        if(cartesJAdverse.size() == 2){
+            nb_iter = cartes_possibles.size();
+            for(int i=0; i<nb_iter; i++){
+                cartesJAdversePossible.add(cartes_possibles.get(i));
+                if(borne.calculerScore(cartesJAdversePossible) > scoreJCourant) return false;
+                cartesJAdversePossible.remove(2);
+            }
+        }
+
+        return true;
     }
 
     public boolean poser(int indexCarte, int indexBorne) {
@@ -136,6 +173,10 @@ public class Jeu{
             return false;
         }
 
+        if(borne.getEtat() != 0){
+            System.out.println("La borne est déjà gagné, veuillez choisir une autre borne!");
+            return false;
+        }
         Carte carte = joueurCourant.getCarte(indexCarte);
         borne.ajouter(carte, joueurCourant);
         joueurCourant.retirerCarte(indexCarte);

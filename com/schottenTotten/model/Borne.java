@@ -66,15 +66,12 @@ public class Borne{
             if (scoreJ1 > scoreJ2) {
                 etat = 1;
                 return 1;
-            }
-            if (scoreJ2 > scoreJ1){
+            }else if (scoreJ2 > scoreJ1){
                 etat = 2;
                 return 2;
-            } 
-            
-            // En cas d'égalité stricte, le premier qui a posé sa 3ème carte gagne
-            // (Il faudra gérer ça, mais pour l'instant disons J1 par défaut)
-            return 0; 
+            }else{
+                return -1; // Égalité stricte
+            }
         }
 
         // Cas 3 (Version Expert) : Revendiquer une borne non finie        

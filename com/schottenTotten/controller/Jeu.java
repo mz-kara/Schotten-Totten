@@ -103,14 +103,15 @@ public class Jeu{
             return;
         }
         Borne borne = bornes.get(idxborne);
-        if(borne.estPleine(joueurCourant) && borne.estPleine(joueurCourant)){
+        if(borne.estPleine(joueurCourant) && borne.estPleine(joueurAdverse)){
             int resultat = borne.calculGagnant();
             if (resultat == 0){
                 System.out.println("Impossible de revendiquer cette borne pour l'instant.");
-            }
-            else {
-                System.out.println("Le joueur " + resultat + "possède maintenant cette borne");
-                borne.setEtat(resultat);
+            }else if(resultat == -1){
+                borne.setEtat(joueurAdverse.getId());
+                System.out.println("Le joueur " + resultat + " possède maintenant cette borne car il a posé en premier la 3ieme carte sur cette borne");
+            }else{
+                System.out.println("Le joueur " + resultat + " possède maintenant cette borne");
             }
         }
     }

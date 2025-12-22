@@ -4,11 +4,6 @@ public class Carte{
     private int numero;
     private Couleur couleur;
 
-    public Carte(){
-        this.numero = 0;
-        this.couleur = new Couleur();
-    }
-
     public Carte(int numero, Couleur couleur){
         this.numero = numero;
         this.couleur = couleur;

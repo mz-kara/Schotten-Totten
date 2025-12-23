@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Jeu{
-    private int numero;
+    private int mode;
     private Joueur joueur1;
     private Joueur joueur2;
     private Joueur joueurCourant;
@@ -109,7 +109,7 @@ public class Jeu{
                 System.out.println("Impossible de revendiquer cette borne pour l'instant.");
             }else if(resultat == -1){
                 borne.setEtat(joueurAdverse.getId());
-                System.out.println("Le joueur " + resultat + " possède maintenant cette borne car il a posé en premier la 3ieme carte sur cette borne");
+                System.out.println("Le joueur " + joueurAdverse.getId() + " possède maintenant cette borne car il a posé en premier la 3ieme carte sur cette borne");
             }else{
                 System.out.println("Le joueur " + resultat + " possède maintenant cette borne");
             }
@@ -140,13 +140,42 @@ public class Jeu{
         // On teste si une combinaison plus forte existe
         List<Carte> cartesJAdversePossible = new ArrayList<>(cartesJAdverse);
         int scoreJCourant = borne.calculerScore(cartesJCourant);
-        int nb_iter = 0;
+        int nb_iter = cartes_possibles.size();;
         if(cartesJAdverse.size() == 2){
-            nb_iter = cartes_possibles.size();
             for(int i=0; i<nb_iter; i++){
                 cartesJAdversePossible.add(cartes_possibles.get(i));
                 if(borne.calculerScore(cartesJAdversePossible) > scoreJCourant) return false;
                 cartesJAdversePossible.remove(2);
+            }
+        }else if(cartesJAdverse.size() == 1){
+            for(int i=0;i<nb_iter;i++){
+                cartesJAdversePossible.add(cartes_possibles.get(i));
+                for(int j=0; j<nb_iter; j++){
+                    if(j != i){
+                        cartesJAdversePossible.add(cartes_possibles.get(j));
+                        if(borne.calculerScore(cartesJAdversePossible) > scoreJCourant) return false; 
+                        cartesJAdversePossible.remove(2);
+                    }
+                }
+                cartesJAdversePossible.remove(1);
+            }
+        }else if(cartesJAdverse.size() == 0){
+            for(int i=0;i<nb_iter;i++){
+                cartesJAdversePossible.add(cartes_possibles.get(i));
+                for(int j=0; j<nb_iter; j++){
+                    if(j != i){
+                        cartesJAdversePossible.add(cartes_possibles.get(j));
+                        for(int k=0; k<nb_iter; k++){
+                            if(k != j){
+                                cartesJAdversePossible.add(cartes_possibles.get(k));
+                                if(borne.calculerScore(cartesJAdversePossible) > scoreJCourant) return false; 
+                                cartesJAdversePossible.remove(2);
+                            }
+                        }
+                        cartesJAdversePossible.remove(1);
+                    }
+                }
+                cartesJAdversePossible.remove(0);
             }
         }
 

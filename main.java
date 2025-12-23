@@ -9,6 +9,8 @@ import com.schottenTotten.model.Joueur;
 
 import com.schottenTotten.view.Affichage;
 
+import com.schottenTotten.ia.Robot;
+
 import java.util.Scanner;
 
 public class main {
@@ -19,24 +21,30 @@ public class main {
         Scanner scanner = new Scanner(System.in);
         int choix_carte = 0;
         int choix_borne = 0;
+        int choix_mode = 0;
         int choix_borne_revendique = 0;
 
         boolean PartieFinie = false;
+
+        choix_mode = Affichage.lireEntier(scanner, "Choisissez : [1] Affronter l'I.A. en duel [2] Défier un autre humain");
+        while(choix_mode != 1 && choix_mode != 2){
+            choix_mode = Affichage.lireEntier(scanner, "Choisissez : [1] Affronter l'I.A. en duel [2] Défier un autre humain");
+        }
+
         while(!PartieFinie){
+            //////////////////////////// Joueur 1 //////////////////////////////
             Affichage.AfficheJeu(jeu);
             Affichage.AfficheJoueur(jeu.getJoueurCourant());
-            System.out.println("Tour du Joueur 1 : Choisissez une carte puis une borne.");
-            choix_carte = scanner.nextInt();
-            choix_borne = scanner.nextInt();
+            choix_carte = Affichage.lireEntier(scanner, "Tour du Joueur 1 : Choisissez une carte [0, 5]");
+            choix_borne = Affichage.lireEntier(scanner, "Tour du Joueur 1 : Choisissez une borne [0, 8]");
 
             while(jeu.poser(choix_carte, choix_borne) == false){
-                System.out.println("Tour du Joueur 1 : Choisissez une carte puis une borne.");
-                choix_carte = scanner.nextInt();
-                choix_borne = scanner.nextInt();
+                choix_carte = Affichage.lireEntier(scanner, "Tour du Joueur 1 : Choisissez une carte [0, 5]");
+                choix_borne = Affichage.lireEntier(scanner, "Tour du Joueur 1 : Choisissez une borne [0, 8]");
             }
 
-            System.out.println("Tour du Joueur 1 : Revendiquer une borne ? Entrez son numéro, sinon saisissez -1.");
-            choix_borne_revendique = scanner.nextInt();
+            choix_borne_revendique = Affichage.lireEntier(scanner, "Tour du Joueur 1 : Revendiquer une borne ? Entrez son numéro, sinon saisissez -1.");
+
             if(choix_borne_revendique == -1){
                 jeu.revendiquer(choix_borne, choix_borne_revendique);
             }else{
@@ -46,21 +54,30 @@ public class main {
             jeu.piocher(jeu.getJoueurCourant());
             jeu.changerJoueur();
 
+            //////////////////////////// Joueur 2 ou Robot //////////////////////////////
+            if(choix_mode == 2){ // mode multijoueur
+                Affichage.AfficheJeu(jeu);
+                Affichage.AfficheJoueur(jeu.getJoueurCourant());
+                choix_carte = Affichage.lireEntier(scanner, "Tour du Joueur 2 : Choisissez une carte [0, 5]");
+                choix_borne = Affichage.lireEntier(scanner, "Tour du Joueur 2 : Choisissez une borne [0, 8]");
 
-            Affichage.AfficheJeu(jeu);
-            Affichage.AfficheJoueur(jeu.getJoueurCourant());
-            System.out.println("Tour du Joueur 2 : Choisissez une carte puis une borne.");
-            choix_carte = scanner.nextInt();
-            choix_borne = scanner.nextInt();
+                while(jeu.poser(choix_carte, choix_borne) == false){
+                    choix_carte = Affichage.lireEntier(scanner, "Tour du Joueur 2 : Choisissez une carte [0, 5]");
+                    choix_borne = Affichage.lireEntier(scanner, "Tour du Joueur 2 : Choisissez une borne [0, 8]");
+                }
 
-            while(jeu.poser(choix_carte, choix_borne) == false){
-                System.out.println("Tour du Joueur 2 : Choisissez une carte puis une borne.");
-                choix_carte = scanner.nextInt();
-                choix_borne = scanner.nextInt();
+                choix_borne_revendique = Affichage.lireEntier(scanner, "Tour du Joueur 2 : Revendiquer une borne ? Entrez son numéro, sinon saisissez -1.");
+            
+            }else if(choix_mode == 1){ // mode solo
+                choix_carte = Robot.choisir_carte();
+                choix_borne = Robot.choisir_borne();
+                choix_borne_revendique = -1; // On ne donne pas la possibilité de revendiquer en avance au robot
+                while(jeu.poser(choix_carte, choix_borne) == false){
+                    choix_carte = Robot.choisir_carte();
+                    choix_borne = Robot.choisir_borne();
+                }
             }
 
-            System.out.println("Tour du Joueur 2 : Revendiquer une borne ? Entrez son numéro, sinon saisissez -1.");
-            choix_borne_revendique = scanner.nextInt();
             if(choix_borne_revendique == -1){
                 jeu.revendiquer(choix_borne, choix_borne_revendique);
             }else{
@@ -75,5 +92,6 @@ public class main {
         }
 
         scanner.close();
+        System.out.println("Le gagnant de cette partie est le JOUEUR " + gagnant.getId());
     }
 }

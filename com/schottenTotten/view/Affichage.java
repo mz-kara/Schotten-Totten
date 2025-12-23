@@ -6,6 +6,8 @@ import com.schottenTotten.model.Borne;
 import com.schottenTotten.model.Joueur;
 
 import java.util.List;
+import java.util.Scanner;
+
 public class Affichage{
     public static void AfficheJeu(Jeu jeu){
         String gagneeJ1 = "GAGNEE PAR J1";
@@ -51,6 +53,18 @@ public class Affichage{
             }
         }
         System.out.println("");
+    }
+
+    public static int lireEntier(Scanner scanner, String message) {
+        System.out.print(message + '\n');
+        while (true) {
+            String saisie = scanner.next();
+            try {
+                return Integer.parseInt(saisie);
+            } catch (NumberFormatException e) {
+                System.out.println("Erreur : " + message);
+            }
+        }
     }
 
 }

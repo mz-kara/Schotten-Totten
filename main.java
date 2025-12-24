@@ -1,4 +1,5 @@
 import com.schottenTotten.controller.Jeu;
+import com.schottenTotten.controller.JeuFactory;
 import com.schottenTotten.controller.Combinaison;
 import com.schottenTotten.controller.Pioche;
 
@@ -16,79 +17,60 @@ import java.util.Scanner;
 public class main {
     public static void main(String[] args) {
         Joueur gagnant = null;
-        Jeu jeu = new Jeu(2);
-
+        Robot robot;
         Scanner scanner = new Scanner(System.in);
         int choix_carte = 0;
         int choix_borne = 0;
         int choix_mode = 0;
         int choix_borne_revendique = 0;
 
-        boolean PartieFinie = false;
+        boolean partieFinie = false;
 
         choix_mode = Affichage.lireEntier(scanner, "Choisissez : [1] Affronter l'I.A. en duel [2] Défier un autre humain");
         while(choix_mode != 1 && choix_mode != 2){
             choix_mode = Affichage.lireEntier(scanner, "Choisissez : [1] Affronter l'I.A. en duel [2] Défier un autre humain");
         }
+        Jeu jeu = JeuFactory.creerPartie(choix_mode);
 
-        while(!PartieFinie){
-            //////////////////////////// Joueur 1 //////////////////////////////
+        while(!partieFinie){
+            Joueur courant = jeu.getJoueurCourant();
             Affichage.AfficheJeu(jeu);
-            Affichage.AfficheJoueur(jeu.getJoueurCourant());
-            choix_carte = Affichage.lireEntier(scanner, "Tour du Joueur 1 : Choisissez une carte [0, 5]");
-            choix_borne = Affichage.lireEntier(scanner, "Tour du Joueur 1 : Choisissez une borne [0, 8]");
+            Affichage.AfficheJoueur(courant);
 
-            while(jeu.poser(choix_carte, choix_borne) == false){
-                choix_carte = Affichage.lireEntier(scanner, "Tour du Joueur 1 : Choisissez une carte [0, 5]");
-                choix_borne = Affichage.lireEntier(scanner, "Tour du Joueur 1 : Choisissez une borne [0, 8]");
+            // Détermination des choix (Humain ou IA)
+            if (choix_mode == 1 && courant.getId() == 2) {
+                // C'est le tour du Robot
+                do {
+                    robot = (Robot) jeu.getJoueurCourant();
+                    choix_carte = robot.choisir_carte();
+                    choix_borne = robot.choisir_borne();
+                } while (!jeu.poser(choix_carte, choix_borne));
+                choix_borne_revendique = -1; // Pas de revendication en avance
+            } else {
+                // C'est le tour d'un Humain
+                choix_carte = Affichage.lireEntier(scanner, "Joueur " + courant.getId() + " : Carte [0-5] : ");
+                choix_borne = Affichage.lireEntier(scanner, "Joueur " + courant.getId() + " : Borne [0-8] : ");
+                while(!jeu.poser(choix_carte, choix_borne)){
+                    System.out.println("Coup invalide !");
+                    choix_carte = Affichage.lireEntier(scanner, "Joueur " + courant.getId() + " : Carte [0-5] : ");
+                    choix_borne = Affichage.lireEntier(scanner, "Joueur " + courant.getId() + " : Borne [0-8] : ");
+                }
+                choix_borne_revendique = Affichage.lireEntier(scanner, "Joueur " + courant.getId() + " : Revendiquer ? (-1 sinon) : ");
             }
 
-            choix_borne_revendique = Affichage.lireEntier(scanner, "Tour du Joueur 1 : Revendiquer une borne ? Entrez son numéro, sinon saisissez -1.");
-
+            // Revendication
             if(choix_borne_revendique == -1){
                 jeu.revendiquer(choix_borne, choix_borne_revendique);
             }else{
                 jeu.revendiquer(choix_borne_revendique, choix_borne_revendique);
             }
-
-            jeu.piocher(jeu.getJoueurCourant());
-            jeu.changerJoueur();
-
-            //////////////////////////// Joueur 2 ou Robot //////////////////////////////
-            if(choix_mode == 2){ // mode multijoueur
-                Affichage.AfficheJeu(jeu);
-                Affichage.AfficheJoueur(jeu.getJoueurCourant());
-                choix_carte = Affichage.lireEntier(scanner, "Tour du Joueur 2 : Choisissez une carte [0, 5]");
-                choix_borne = Affichage.lireEntier(scanner, "Tour du Joueur 2 : Choisissez une borne [0, 8]");
-
-                while(jeu.poser(choix_carte, choix_borne) == false){
-                    choix_carte = Affichage.lireEntier(scanner, "Tour du Joueur 2 : Choisissez une carte [0, 5]");
-                    choix_borne = Affichage.lireEntier(scanner, "Tour du Joueur 2 : Choisissez une borne [0, 8]");
-                }
-
-                choix_borne_revendique = Affichage.lireEntier(scanner, "Tour du Joueur 2 : Revendiquer une borne ? Entrez son numéro, sinon saisissez -1.");
             
-            }else if(choix_mode == 1){ // mode solo
-                choix_carte = Robot.choisir_carte();
-                choix_borne = Robot.choisir_borne();
-                choix_borne_revendique = -1; // On ne donne pas la possibilité de revendiquer en avance au robot
-                while(jeu.poser(choix_carte, choix_borne) == false){
-                    choix_carte = Robot.choisir_carte();
-                    choix_borne = Robot.choisir_borne();
-                }
-            }
-
-            if(choix_borne_revendique == -1){
-                jeu.revendiquer(choix_borne, choix_borne_revendique);
-            }else{
-                jeu.revendiquer(choix_borne_revendique, choix_borne_revendique);
-            }
-
-            jeu.piocher(jeu.getJoueurCourant());
+            jeu.piocher(courant);
             jeu.changerJoueur();
-
+            
+            // Vérification du gagant
             gagnant = jeu.victoire();
-            PartieFinie = jeu.isPartieTerminee();
+            partieFinie = jeu.isPartieTerminee();
         }
 
         scanner.close();

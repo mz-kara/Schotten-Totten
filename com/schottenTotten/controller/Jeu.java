@@ -5,6 +5,8 @@ import com.schottenTotten.model.Carte;
 import com.schottenTotten.model.Joueur;
 import com.schottenTotten.controller.Pioche;
 
+import com.schottenTotten.ia.Robot;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -21,7 +23,7 @@ public class Jeu{
     public Jeu(int mode){   // mode : 1 -> solo avec ia, 2 -> humain vs humain
         this.joueur1 = new Joueur(1);
         if(mode == 2) this.joueur2 = new Joueur(2);
-        else if(mode == 1) this.joueur2 = new Joueur(2); //à compléter par ai
+        else if(mode == 1) this.joueur2 = new Robot(2);
         this.joueurCourant = joueur1;
         this.joueurAdverse = joueur2;
         this.pioche = new Pioche();
@@ -66,6 +68,10 @@ public class Jeu{
 
     public List<Borne> getBornes(){
         return bornes;
+    }
+
+    public Pioche getPioche(){
+        return pioche;
     }
     
     public Joueur getJoueur1(){
@@ -190,7 +196,8 @@ public class Jeu{
             return false;
         } 
 
-        if (indexCarte < 0 || indexCarte >= 6){
+        int tailleCartes = joueurCourant.getCartes().size();
+        if (indexCarte < 0 || indexCarte >= tailleCartes){
             System.out.println("Choisissez un index d'une carte compris entre [0, 5].");
             return false;
         } 

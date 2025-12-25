@@ -10,10 +10,12 @@ public class Borne{
     private List<Carte> cartesJ1;
     private List<Carte> cartesJ2;
     private int tailleMax;
+    private boolean modeColinMaillard;
 
     public Borne(){
         this.etat = 0;
         this.tailleMax = 3;
+        this.modeColinMaillard = false;
         this.cartesJ1 = new ArrayList<>();
         this.cartesJ2 = new ArrayList<>();
     }
@@ -37,6 +39,14 @@ public class Borne{
         }
     }
 
+    public void activerCombatDeBoue() {
+        this.tailleMax = 4;
+    }
+
+    public void activerColinMaillard() {
+        this.modeColinMaillard = true;
+    }
+
     public List<Carte> getCartes(Joueur joueur){
         if (joueur.getId() == 1){
             return cartesJ1;
@@ -48,6 +58,9 @@ public class Borne{
 
     public int calculerScore(List<Carte> cartes){
         int score = Combinaison.somme(cartes);
+        if (modeColinMaillard) {
+            return score;
+        }
         if (Combinaison.suiteCouleur(cartes)) return 500 + score;
         if (Combinaison.brelan(cartes)) return 400 + score;
         if (Combinaison.couleur(cartes)) return 300 + score;
@@ -55,11 +68,10 @@ public class Borne{
         return score;
     }
 
-    // Version simple (3 cartes partout)
     public int calculGagnant() {
         if (etat != 0) return etat;
 
-        if (cartesJ1.size() == 3 && cartesJ2.size() == 3) {
+        if (cartesJ1.size() == tailleMax && cartesJ2.size() == tailleMax) {
             int scoreJ1 = calculerScore(cartesJ1);
             int scoreJ2 = calculerScore(cartesJ2);
 

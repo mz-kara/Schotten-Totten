@@ -2,6 +2,7 @@ package com.schottenTotten.controller;
 
 import com.schottenTotten.model.Carte;
 import com.schottenTotten.model.Couleur;
+import com.schottenTotten.model.CarteTactique;
 
 
 import java.util.ArrayList;
@@ -10,14 +11,21 @@ import java.util.Collections;
 
 public class Pioche{
     private List<Carte> pioche;
+
+    public Pioche() {
+        this(false);
+    }
     
-    public Pioche(){
+    public Pioche(boolean avecTactique) {
         this.pioche = new ArrayList<>();
-        initialisation();
+        initialisationClassique();
+        if (avecTactique) {
+            initialisationTactique();
+        }
         melanger();
     }
 
-    private void initialisation(){
+    private void initialisationClassique(){
         for (int i = 1; i <= 9; i++){
             pioche.add(new Carte(i,Couleur.bleu()));
             pioche.add(new Carte(i,Couleur.jaune()));
@@ -26,6 +34,20 @@ public class Pioche{
             pioche.add(new Carte(i,Couleur.violet()));
             pioche.add(new Carte(i,Couleur.marron()));
         }
+    }
+
+private void initialisationTactique() {
+        // On ajoute les 10 cartes tactiques (en utilisant tes constantes String)
+        pioche.add(new CarteTactique(CarteTactique.JOKER));
+        pioche.add(new CarteTactique(CarteTactique.JOKER));
+        pioche.add(new CarteTactique(CarteTactique.ESPION));
+        pioche.add(new CarteTactique(CarteTactique.PORTE_BOUCLIER));
+        pioche.add(new CarteTactique(CarteTactique.COLIN_MAILLARD));
+        pioche.add(new CarteTactique(CarteTactique.COMBAT_DE_BOUE));
+        pioche.add(new CarteTactique(CarteTactique.CHASSEUR_DE_TETE));
+        pioche.add(new CarteTactique(CarteTactique.STRATEGE));
+        pioche.add(new CarteTactique(CarteTactique.BANSHEE));
+        pioche.add(new CarteTactique(CarteTactique.TRAITRE));
     }
 
     public void melanger() {

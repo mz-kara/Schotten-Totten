@@ -22,20 +22,26 @@ public class main {
         int choix_carte = 0;
         int choix_borne = 0;
         int choix_mode = 0;
+        int choix_variante = 0;
         int choix_borne_revendique = 0;
 
         boolean partieFinie = false;
 
+        // Choix solo ou multijoueur
         choix_mode = Affichage.lireEntier(scanner, "Choisissez : [1] Affronter l'I.A. en duel [2] Défier un autre humain");
         while(choix_mode != 1 && choix_mode != 2){
             choix_mode = Affichage.lireEntier(scanner, "Choisissez : [1] Affronter l'I.A. en duel [2] Défier un autre humain");
         }
-        Jeu jeu = JeuFactory.creerPartie(choix_mode);
+
+        // Choix variante tactique ou officiel
+        choix_variante = Affichage.lireEntier(scanner, "Choisissez : [1] Variante officielle [2] Variante tactique");
+        while(choix_variante != 1 && choix_variante != 2){
+            choix_mode = Affichage.lireEntier(scanner, "Choisissez : [1] Variante officielle [2] Variante tactique");
+        }
+        Jeu jeu = JeuFactory.creerJeu(choix_mode, choix_variante);
 
         while(!partieFinie){
             Joueur courant = jeu.getJoueurCourant();
-            Affichage.AfficheJeu(jeu);
-            Affichage.AfficheJoueur(courant);
 
             // Détermination des choix (Humain ou IA)
             if (choix_mode == 1 && courant.getId() == 2) {
@@ -48,6 +54,8 @@ public class main {
                 choix_borne_revendique = -1; // Pas de revendication en avance
             } else {
                 // C'est le tour d'un Humain
+                Affichage.AfficheJeu(jeu);
+                Affichage.AfficheJoueur(courant);
                 choix_carte = Affichage.lireEntier(scanner, "Joueur " + courant.getId() + " : Carte [0-5] : ");
                 choix_borne = Affichage.lireEntier(scanner, "Joueur " + courant.getId() + " : Borne [0-8] : ");
                 while(!jeu.poser(choix_carte, choix_borne)){

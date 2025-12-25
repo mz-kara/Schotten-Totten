@@ -45,7 +45,8 @@ public class Affichage{
     }
 
     public static void AfficheJoueur(Joueur joueur){
-        for(int i=0; i<6; i++){
+        int tailleMax = joueur.getCartes().size();
+        for(int i=0; i<tailleMax; i++){
             if(joueur.getCarte(i) != null){
                 System.out.print(joueur.getCarte(i).description() + " | ");
             }else{

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class Jeu {
     private int mode;
+    private int tailleMax;
     private Joueur joueur1;
     private Joueur joueur2;
     private Joueur joueurCourant;
@@ -29,6 +30,7 @@ public class Jeu {
         this.joueurAdverse = joueur2;
         
         this.pioche = new Pioche(avecTactique);
+        this.tailleMax = (avecTactique) ? 7 : 6;
         
         this.bornes = new ArrayList<>();
         this.partieTerminee = false;
@@ -44,7 +46,7 @@ public class Jeu {
     }
 
     private void distribuerCartes() {
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < tailleMax; i++) {
             joueur1.ajouter(pioche.piocher());
             joueur2.ajouter(pioche.piocher());
         }
@@ -195,9 +197,8 @@ public class Jeu {
             return false;
         } 
 
-        int tailleCartes = joueurCourant.getCartes().size();
-        if (indexCarte < 0 || indexCarte >= tailleCartes) {
-            System.out.println("Choisissez un index d'une carte compris entre [0, " + (tailleCartes - 1) + "].");
+        if (indexCarte < 0 || indexCarte >= tailleMax) {
+            System.out.println("Choisissez un index d'une carte compris entre [0, " + (tailleMax - 1) + "].");
             return false;
         } 
         

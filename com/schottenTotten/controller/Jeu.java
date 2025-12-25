@@ -4,6 +4,7 @@ import com.schottenTotten.model.Borne;
 import com.schottenTotten.model.Carte;
 import com.schottenTotten.model.Joueur;
 import com.schottenTotten.ia.Robot;
+import com.schottenTotten.model.CarteTactique;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -31,6 +32,9 @@ public class Jeu {
         
         this.pioche = new Pioche(avecTactique);
         this.tailleMax = (avecTactique) ? 7 : 6;
+        joueur1.setTailleMax(this.tailleMax);
+        joueur2.setTailleMax(this.tailleMax);
+
         
         this.bornes = new ArrayList<>();
         this.partieTerminee = false;
@@ -45,11 +49,77 @@ public class Jeu {
         }
     }
 
+    public List<Carte> actionChasseurDeTete() {
+        List<Carte> temporaire = new ArrayList<>();
+        // On pioche 3 cartes (ou moins si pioche presque vide)
+        for (int i = 0; i < 3; i++) {
+            if (!pioche.estVideClan()) {
+                temporaire.add(pioche.piocherClan());
+            }
+        }
+        return temporaire;
+    }
+
+    public void confirmerChasseurDeTete(List<Carte> cartesGardees, Carte carteRendue) {
+        for (Carte c : cartesGardees) {
+            joueurCourant.forcerAjouter(c);
+        }
+        pioche.mettreSousLePaquet(carteRendue);
+    }
+
+    public boolean actionBanshee(int indexBorne, int indexCarteAdverse) {
+        if (indexBorne < 0 || indexBorne >= 9) return false;
+        Borne borne = bornes.get(indexBorne);
+        
+        List<Carte> cartesAdverses = borne.getCartes(joueurAdverse);
+        
+        if (indexCarteAdverse < 0 || indexCarteAdverse >= cartesAdverses.size()) return false;
+        if (borne.getEtat() != 0) return false;
+
+        Carte c = cartesAdverses.remove(indexCarteAdverse);
+        pioche.defausser(c);
+        
+        return true;
+    }
+
+    public boolean actionStratege(int borneSourceIdx, int carteIdx, int borneDestIdx) {
+        if (borneSourceIdx < 0 || borneDestIdx < 0 || borneSourceIdx >= 9 || borneDestIdx >= 9) return false;
+        
+        Borne src = bornes.get(borneSourceIdx);
+        Borne dest = bornes.get(borneDestIdx);
+        List<Carte> mesCartes = src.getCartes(joueurCourant);
+
+        if (carteIdx < 0 || carteIdx >= mesCartes.size()) return false;
+        if (src.getEtat() != 0 || dest.getEtat() != 0) return false;
+        if (dest.estPleine(joueurCourant)) return false;
+
+        Carte c = mesCartes.remove(carteIdx);
+        dest.ajouter(c, joueurCourant);
+        return true;
+    }
+
+    public boolean actionTraitre(int borneSourceIdx, int carteAdverseIdx, int borneDestIdx) {
+        if (borneSourceIdx < 0 || borneDestIdx < 0 || borneSourceIdx >= 9 || borneDestIdx >= 9) return false;
+
+        Borne src = bornes.get(borneSourceIdx);
+        Borne dest = bornes.get(borneDestIdx);
+        
+        List<Carte> cartesAdverses = src.getCartes(joueurAdverse);
+
+        if (carteAdverseIdx < 0 || carteAdverseIdx >= cartesAdverses.size()) return false;
+        if (src.getEtat() != 0 || dest.getEtat() != 0) return false;
+        if (dest.estPleine(joueurCourant)) return false;
+
+        // Le vol
+        Carte c = cartesAdverses.remove(carteAdverseIdx);
+        dest.ajouter(c, joueurCourant);
+        return true;
+    }
+
     private void distribuerCartes() {
         for (int i = 0; i < tailleMax; i++) {
-            joueur1.ajouter(pioche.piocher());
-            joueur2.ajouter(pioche.piocher());
-        }
+            joueur1.ajouter(pioche.piocherClan());
+            joueur2.ajouter(pioche.piocherClan());        }
     }
 
     public void changerJoueur() {
@@ -96,11 +166,24 @@ public class Jeu {
     }
 
 
-    public void piocher(Joueur joueur) {
-        if (!pioche.estVide()) {
-            Carte carte = pioche.piocher();
+    public void piocher(Joueur joueur, int type) {
+        Carte carte = null;
+        
+        if (type == 2 && !pioche.estVideTactique()) {
+            carte = pioche.piocherTactique();
+        } else {
+            if (!pioche.estVideClan()) {
+                carte = pioche.piocherClan();
+            }
+        }
+
+        if (carte != null) {
             joueur.ajouter(carte);
         }
+    }
+
+    public void piocher(Joueur joueur) {
+        piocher(joueur, 1);
     }
 
     public void revendiquer(int idxborne, int reponse) {
@@ -214,9 +297,24 @@ public class Jeu {
         }
         
         Carte carte = joueurCourant.getCarte(indexCarte);
+
+        if (carte.estTactique()) {
+            CarteTactique tactique = (CarteTactique) carte; 
+            
+            if (tactique.getNom().equals(CarteTactique.COMBAT_DE_BOUE)) {
+                borne.activerCombatDeBoue();
+                joueurCourant.retirerCarte(indexCarte);
+                return true;
+            }
+            if (tactique.getNom().equals(CarteTactique.COLIN_MAILLARD)) {
+                borne.activerColinMaillard();
+                joueurCourant.retirerCarte(indexCarte);
+                return true;
+            }
+        }
+
         borne.ajouter(carte, joueurCourant);
         joueurCourant.retirerCarte(indexCarte);
-
         return true;
     }
 

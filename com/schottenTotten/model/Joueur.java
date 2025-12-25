@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Joueur{
-    private int tailleMax;
+    protected int tailleMax; //Pour que l'ia puisse lire
     private int id;
     private List<Carte> cartes;
 
@@ -25,6 +25,14 @@ public class Joueur{
         }
     }
 
+    public void setTailleMax(int taille) {
+        this.tailleMax = taille;
+    }
+
+    public void forcerAjouter(Carte carte) {
+        cartes.add(carte);
+    }
+
     public void retirerCarte(int index) {
         if (index >= 0 && index < cartes.size()) {
             cartes.remove(index);
@@ -32,7 +40,7 @@ public class Joueur{
     }
 
     public Carte getCarte(int indexCarte){
-        if (indexCarte >= 0 && indexCarte <= 5){
+        if (indexCarte >= 0 && indexCarte < cartes.size()){
             return cartes.get(indexCarte);
         }
         return null;
